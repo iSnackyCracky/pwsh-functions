@@ -1,7 +1,7 @@
 function Optimize-Rasphone {
     [CmdletBinding()]
     param (
-        [string]$Phonebook = "$( $env:APPDATA)\Microsoft\Network\Connections\Pbk\rasphone.pbk",
+        [string]$Phonebook = "$( $env:APPDATA )\Microsoft\Network\Connections\Pbk\rasphone.pbk",
         [string]$Prioritize
     )
     
@@ -46,11 +46,11 @@ function Optimize-Rasphone {
         # cause we create it before reading any content), prioritize and sort by name
         $sortedRasphoneEntries = @()
         Write-Verbose "Prioritizing entries matching $prioFilter"
-        $sortedRasphoneEntries += $rasphoneEntries | Where-Object { $_.Name -ne "" -and $_.Name -like "$prioFilter"} | Sort-Object -Property Name
-        $sortedRasphoneEntries += $rasphoneEntries | Where-Object { $_.Name -ne "" -and $_.Name -notlike "$prioFilter"} | Sort-Object -Property Name
+        $sortedRasphoneEntries += $rasphoneEntries | Where-Object { $_.Name -ne "" -and $_.Name -like "$prioFilter" } | Sort-Object -Property Name
+        $sortedRasphoneEntries += $rasphoneEntries | Where-Object { $_.Name -ne "" -and $_.Name -notlike "$prioFilter" } | Sort-Object -Property Name
 
         # clear rasphone.pbk so we don't need to handle the first entry differently
-        Write-Verbose "Writing $( $sortedRasphoneEntries.Count) entries to $Phonebook"
+        Write-Verbose "Writing $( $sortedRasphoneEntries.Count ) entries to $Phonebook"
         Set-Content -Path $Phonebook -Value ""
         foreach ($entry in $sortedRasphoneEntries) {
             $entry.Content | Out-File -Path $Phonebook -Force -Append
